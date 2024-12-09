@@ -9,11 +9,10 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const router = useRouter();
 
-    // Usuarios permitidos
     const users = [
         {
             email: "dev.francoscm@gmail.com",
-            name: "Francisco Castro",
+            name: "Franco Castro",
             password: "girosbol",
             role: "admin",
         },
@@ -25,7 +24,6 @@ export const AuthProvider = ({ children }) => {
         },
     ];
 
-    // Manejar inicio de sesión
     const login = (email, password) => {
         const foundUser = users.find(
             (user) => user.email === email && user.password === password
@@ -34,20 +32,18 @@ export const AuthProvider = ({ children }) => {
         if (foundUser) {
             setUser(foundUser);
             localStorage.setItem("user", JSON.stringify(foundUser));
-            return true; // Login exitoso
+            return true;
         } else {
-            return false; // Credenciales incorrectas
+            return false;
         }
     };
 
-    // Manejar cierre de sesión
     const logout = () => {
         setUser(null);
         localStorage.removeItem("user");
-        router.push("/"); // Redirige al Landing Page
+        router.push("/");
     };
 
-    // Cargar el usuario desde localStorage al iniciar la app
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {

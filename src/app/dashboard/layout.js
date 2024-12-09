@@ -1,9 +1,13 @@
 "use client";
 
-import ProtectedRoute from "../../hoc/ProtectedRoute";
+import withAuth from "../../hoc/withAuth";
+import PropTypes from 'prop-types';
 
 const DashboardLayout = ({ children }) => {
-    return <ProtectedRoute>{children}</ProtectedRoute>;
+    return <>{children}</>;
+};
+DashboardLayout.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
-export default DashboardLayout;
+export default withAuth(DashboardLayout);
