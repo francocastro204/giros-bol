@@ -84,7 +84,7 @@ const Contacto = () => {
 
             {/* Dirección */}
             <p className="text-lg text-gray-700 mb-4">
-            Visita nuestra oficina ubicada en <strong>Bernardo O'Higgins 441, Copiapó, Atacama, Chile</strong>
+                Visita nuestra oficina ubicada en <strong>Bernardo OHiggins 441, Copiapó, Atacama, Chile</strong>
             </p>
 
             {/* Teléfono */}
