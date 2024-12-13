@@ -20,7 +20,7 @@ const RootLayout = ({ children }) => {
                 <AuthProvider>
                     <Header />
                     <main>{children}</main>
-                    <footer className="bg-morado text-white text-center py-4">
+                    <footer className="bg-morado text-white text-center py-4 text-xs md:text-base">
                         &copy; 2024 Giros Bol. Todos los derechos reservados.
                     </footer>
                 </AuthProvider>

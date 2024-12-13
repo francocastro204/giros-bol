@@ -57,8 +57,8 @@ const Cotizador = () => {
                 className="text-start"
             >
                 <div className="mb-4">
-                    <label htmlFor="nombreRemitente" className="block font-bold mb-2">
-                        Nombre del Remitente:
+                    <label htmlFor="nombreRemitente" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
+                        Nombre del Remitente
                     </label>
                     <input
                         id="nombreRemitente"
@@ -66,12 +66,12 @@ const Cotizador = () => {
                         value={nombreRemitente}
                         onChange={(e) => setNombreRemitente(e.target.value)}
                         placeholder="Tu nombre"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="montoCLP" className="block font-bold mb-2">
+                    <label htmlFor="montoCLP" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
                         Monto a Enviar (CLP):
                     </label>
                     <input
@@ -80,18 +80,18 @@ const Cotizador = () => {
                         value={formatMiles(montoCLP)}
                         onChange={handleMontoChange}
                         placeholder="Ejemplo $100.000"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
                     {montoCLP && parseInt(montoCLP, 10) < 10000 && (
-                        <p className="text-red-600 text-sm">El monto mínimo es de $10.000 CLP.</p>
+                        <p className="text-red-600 text-xs md:text-base">El monto mínimo es de $10.000 CLP.</p>
                     )}
                     {montoCLP && parseInt(montoCLP, 10) > 2000000 && (
-                        <p className="text-red-600 text-sm">El monto máximo es de $2.000.000 CLP.</p>
+                        <p className="text-red-600 text-xs md:text-base">El monto máximo es de $2.000.000 CLP.</p>
                     )}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="montoBOB" className="block font-bold mb-2">
+                    <label htmlFor="montoBOB" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
                         Monto a Recibir (BOB):
                     </label>
                     <input
@@ -99,16 +99,16 @@ const Cotizador = () => {
                         type="text"
                         value={`${formatMiles(montoBOB)} BOB`}
                         readOnly
-                        className="w-full p-2 border bg-gray-100 rounded"
+                        className="w-full p-2 border bg-gray-100 rounded text-xs md:text-base text-gray-700"
                     />
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-primary text-white py-2 px-4 rounded hover:bg-green-700"
+                    className="w-full bg-primary text-white py-2 px-4 rounded hover:bg-green-700 text-xs md:text-base"
                 >
                     Continuar en WhatsApp
                 </button>
-                <p className="mt-4 italic text-gray-700">
+                <p className="mt-4 italic text-gray-700 text-xs md:text-base">
                     Con Giros Bol, tu dinero llega rápido y seguro.
                 </p>
             </form>
