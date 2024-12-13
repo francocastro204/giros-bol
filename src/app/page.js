@@ -1,58 +1,119 @@
 "use client";
-
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Cotizador from "@/components/Cotizador";
+import { constants } from "@/constants";
+
 
 // Hero Section
 const Hero = () => {
     return (
-        <section id="top" className="pt-24 pb-12 text-center">
-            <h2 className="text-3xl font-bold">Envía dinero a Bolivia y más allá</h2>
-            <p className="mt-4 text-lg">
-                Con Giros Bol, tu dinero llega rápido y seguro.
-            </p>
+        <section id="cotiza" className="pt-24 pb-24 text-center" style={{ backgroundImage: 'url(/images/bg-santa-cruz-bolivia-giros-bol.jpg)', backgroundSize: 'scroll', backgroundPosition: 'center' }}>
+            <h2 className="mt-20 text-3xl font-bold text-white mb-20 hero-text">Envía dinero a Bolivia y más allá, de forma rápida, segura y confiable</h2>
+            <Cotizador />
         </section>
     );
 };
+const ConoceGirosBol = () => {
+    // Inicia AOS
+    useEffect(() => {
+        AOS.init({ duration: 1000 }); // Duración del fade-in
+    }, []);
 
-// Nosotros Section
-const Nosotros = () => {
     return (
-        <section id="nosotros" className="py-12 bg-gray-100 text-center">
-            <h2 className="text-2xl font-bold mb-4">Sobre Nosotros</h2>
-            <div className="columns-2 pt-6">
-                <p className="pt-6 pb-8">Imagen del local</p>
-                <p className="pt-6">
-                    GirosBol es una empresa líder en el mercado de giros y transferencias de
-                    dinero en Bolivia. Nuestra misión es brindar servicios financieros
-                    seguros, confiables y accesibles a nuestros clientes, permitiéndoles
-                    enviar y recibir dinero de manera fácil y rápida.
-                </p>
+        <section id="nosotros" className="bg-white py-16 text-center">
+            {/* Título */}
+            <h2 className="text-4xl font-bold text-primary mb-6 font-libre-baskerville" data-aos="fade-up">
+                Conoce Giros Bol
+            </h2>
+
+            {/* Mensaje de marca */}
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto mb-12" data-aos="fade-up">
+                En GirosBol, entendemos que la familia es lo más importante. Por eso, nos
+                esforzamos por brindar servicios financieros que te permitan cuidar y proteger
+                a tus seres queridos, mientras valorizamos y recompensamos tu trabajo y esfuerzo.
+                ¡Únete a nuestra comunidad y descubre por qué en GirosBol, tu trabajo vale más!
+            </p>
+
+            {/* Valores con iconos */}
+            <div className="flex justify-center gap-10 mb-20 mt-20" data-aos="fade-up">
+                <div className="text-center">
+                    <span className="text-4xl">🔒</span>
+                    <p className="text-black font-bold">Confianza y Seguridad</p>
+                </div>
+                <div className="text-center">
+                    <span className="text-4xl">💡</span>
+                    <p className="text-black font-bold">Innovación y Tecnología</p>
+                </div>
+                <div className="text-center">
+                    <span className="text-4xl">🤝</span>
+                    <p className="text-black font-bold">Servicio al Cliente</p>
+                </div>
+            </div>
+
+            {/* Misión y Visión */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto" data-aos="fade-up">
+                {/* Misión */}
+                <div className="text-center">
+                    <h3 className="text-xl font-bold font-libre-baskerville mb-4">Nuestra Misión</h3>
+                    <p className="text-gray-600">
+                        Brindar servicios financieros seguros y accesibles, conectando familias y
+                        asegurando tranquilidad en cada transacción.
+                    </p>
+                </div>
+
+                {/* Visión */}
+                <div className="text-center">
+                    <h3 className="text-xl font-bold font-libre-baskerville mb-4">Nuestra Visión</h3>
+                    <p className="text-gray-600">
+                        Ser líderes en servicios de envío de dinero en Bolivia y más allá,
+                        reconocidos por nuestra innovación y confianza.
+                    </p>
+                </div>
             </div>
         </section>
     );
 };
 
-// Contacto Section
 const Contacto = () => {
     return (
-        <section id="contacto" className="py-12 bg-gray-100 text-center">
-            <h2 className="text-2xl font-bold mb-4">Contacto</h2>
-            <p>Para más información, contáctanos en el WhatsApp: +56945332933</p>
-            <p className="mt-2">
-                O visítanos en nuestra sucursal en Santiago de Chile.
+        <section className="bg-white py-16 text-center">
+            {/* Título */}
+            <h2 className="text-3xl font-bold mb-6 font-libre-baskerville text-morado">¡Estamos aquí para ti!</h2>
+
+            {/* Dirección */}
+            <p className="text-lg text-gray-700 mb-4">
+            Visita nuestra oficina ubicada en <strong>Bernardo O'Higgins 441, Copiapó, Atacama, Chile</strong>
+            </p>
+
+            {/* Teléfono */}
+            <p className="text-lg text-gray-700 mb-4">
+                Llámanos o Escríbenos al WhatsApp
+                <a href={`tel:${constants.whatsappNumber}`} className="text-green-600 hover:underline">
+                    {constants.whatsappNumber}
+                </a>
+            </p>
+
+            {/* Correo */}
+            <p className="text-lg text-gray-700 mb-4">
+                Mandanos un correo con tus dudas o consultas
+                <a href={`mailto:${constants.corporateEmail}`} className="text-green-600 hover:underline">
+                    {constants.corporateEmail}
+                </a>
             </p>
         </section>
     );
 };
 
+
 // Landing Page
 const LandingPage = () => {
     return (
-        <div className="min-h-screen bg-gray-50 mt-6">
+        <div className="min-h-screen bg-gray-50">
             {/* Secciones */}
             <Hero />
-            <Cotizador />
-            <Nosotros />
+            <ConoceGirosBol />
             <Contacto />
         </div>
     );
