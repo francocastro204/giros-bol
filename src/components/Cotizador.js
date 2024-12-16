@@ -41,8 +41,8 @@ const Cotizador = () => {
 
     // Enviar a WhatsApp
     const handleSendToWhatsApp = () => {
-        const phoneNumber = constants.whatsappNumber; // Número configurado
-        const message = `Hola, mi nombre es *${nombreRemitente}*. Quiero enviar *${formatMiles(montoCLP)} CLP* y recibir *${formatMiles(montoBOB)} BOB* en Bolivia. Espero su confirmación para continuar con la transacción. ¡Gracias!`;
+        const phoneNumber = constants.whatsappNumber;
+        const message = `Hola, mi nombre es *${nombreRemitente}*. Quiero enviar *$${formatMiles(montoCLP)} CLP* y recibir *$${formatMiles(montoBOB)} BOB* en Bolivia. Espero su confirmación para continuar con la transacción. ¡Gracias!`;
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
     };
