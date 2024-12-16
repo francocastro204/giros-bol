@@ -1,5 +1,5 @@
 export const constants = {
-    whatsappNumber: "+56928618528",
+    whatsappNumber: "56928618528",
     corporateEmail: "info@girosbol.com",
     oficinaCopiapo: "Bernardo O'Higgins 441, Local 24, Copiapó, Atacama, Chile",
     tasas: [
