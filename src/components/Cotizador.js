@@ -10,14 +10,14 @@ const Cotizador = () => {
     // Manejar cambio en el campo Monto a Enviar
     const handleMontoChange = (e) => {
         const rawValue = e.target.value.replace(/\D/g, ""); // Eliminar caracteres no numéricos
-        const numericValue = parseInt(rawValue, 10); // Convertir a número entero
+        const numericValue = parseInt(rawValue, 10);
 
         if (isNaN(numericValue)) {
-            setMontoCLP(""); // Si no es un número, limpiar
-        } else if (numericValue > 2000000) {
-            setMontoCLP("2000000"); // Límite máximo
+            setMontoCLP("");
+        } else if (numericValue > constants.montoClpMaximo) {
+            setMontoCLP("2000000");
         } else {
-            setMontoCLP(rawValue); // Actualizar valor
+            setMontoCLP(rawValue);
         }
     };
 
@@ -28,10 +28,12 @@ const Cotizador = () => {
 
     // Calcular la tasa dinámica según el monto ingresado
     const calculateTasaBase = (monto) => {
-        if (monto <= 99999) return 0.0100;
-        if (monto <= 499999) return 0.0103;
-        if (monto <= 999999) return 0.0104;
-        return 0.0105; // Para montos hasta 2.000.000
+        for (let i = 0; i < constants.tasas.length; i++) {
+            if (monto <= constants.tasas[i].max) {
+                return constants.tasas[i].rate;
+            }
+        }
+        return constants.tasas[constants.tasas.length - 1].rate;
     };
 
     // Calcular el monto en BOB
@@ -46,6 +48,9 @@ const Cotizador = () => {
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
     };
+
+    // Verificar si el botón debe estar habilitado
+    const isButtonDisabled = !(nombreRemitente.trim() && montoCLP && parseInt(montoCLP, 10) >= constants.montoClpMinimo);
 
     return (
         <div className="cotizador mt-6 mb-20 max-w-lg mx-auto p-6 shadow-md rounded bg-white">
@@ -83,11 +88,8 @@ const Cotizador = () => {
                         className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
-                    {montoCLP && parseInt(montoCLP, 10) < 10000 && (
+                    {montoCLP && parseInt(montoCLP, 10) < constants.montoClpMinimo && (
                         <p className="text-red-600 text-xs md:text-base">El monto mínimo es de $10.000 CLP.</p>
-                    )}
-                    {montoCLP && parseInt(montoCLP, 10) > 2000000 && (
-                        <p className="text-red-600 text-xs md:text-base">El monto máximo es de $2.000.000 CLP.</p>
                     )}
                 </div>
                 <div className="mb-4">
@@ -104,12 +106,17 @@ const Cotizador = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-primary text-white py-2 px-4 rounded hover:bg-green-700 text-xs md:text-base"
+                    disabled={isButtonDisabled}
+                    className={`w-full py-2 px-4 rounded text-xs md:text-base ${
+                        isButtonDisabled
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-primary text-white hover:bg-green-700"
+                    }`}
                 >
                     Continuar en WhatsApp
                 </button>
-                <p className="mt-4 italic text-gray-700 text-xs md:text-base">
-                    Con Giros Bol, tu dinero llega rápido y seguro.
+                <p className="mt-4 italic text-gray-700 text-xs md:text-sm">
+                    El valor de la tasa es referencial y puede tener pequeñas variaciones. Sujeto a negocio. Esta simulación no garantiza la tasa final.
                 </p>
             </form>
         </div>
