@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+# Host
+Host: https://girosbol.com
+
+# Sitemaps
+Sitemap: https://girosbol.com/sitemap.xml
