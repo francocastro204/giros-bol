@@ -63,14 +63,14 @@ const Cotizador = () => {
             >
                 <div className="mb-4">
                     <label htmlFor="nombreRemitente" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
-                        Nombre del Remitente
+                        Nombre
                     </label>
                     <input
                         id="nombreRemitente"
                         type="text"
                         value={nombreRemitente}
                         onChange={(e) => setNombreRemitente(e.target.value)}
-                        placeholder="Tu nombre"
+                        placeholder="Indicanos tu nombre"
                         className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
@@ -107,6 +107,7 @@ const Cotizador = () => {
                 <button
                     type="submit"
                     disabled={isButtonDisabled}
+                    data-gtm-id="continuar-whatsapp"
                     className={`w-full py-2 px-4 rounded text-xs md:text-base ${
                         isButtonDisabled
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"

@@ -9,8 +9,18 @@ import { constants } from "@/constants";
 // Hero Section
 const Hero = () => {
     return (
-        <section id="cotiza" className="pt-24 pb-24 text-center pl-4 pr-4" style={{ backgroundImage: 'url(/images/bg-santa-cruz-bolivia-giros-bol.jpg)', backgroundSize: 'scroll', backgroundPosition: 'center' }}>
-            <h2 className="text-3xl md:text-4xl mt-20  font-bold text-white mb-20 hero-text">Envía dinero a Bolivia y más allá, de forma rápida, segura y confiable</h2>
+        <section
+            id="cotiza"
+            className="pt-24 pb-24 text-center pl-4 pr-4"
+            style={{
+                backgroundImage: 'url(/images/bg-santa-cruz-bolivia-giros-bol.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}
+        >
+            <h2 className="text-3xl md:text-4xl mt-20 font-bold text-white mb-20 hero-text">
+                Envía dinero a Bolivia y más allá, de forma rápida, segura y confiable
+            </h2>
             <Cotizador />
         </section>
     );

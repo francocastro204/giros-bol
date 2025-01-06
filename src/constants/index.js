@@ -1,7 +1,14 @@
 export const constants = {
+    urlEmpresa: 'https://girosbol.com',
+    logoEmpresa: 'https://girosbol.com/images/logo-giros-bol.png',
+    nombreEmpresa: 'Giros Bol',
+    fraseEmpresa: 'Envía Dinero Rápido y Seguro',
+    descripcionEmpresa: 'Giros Bol ofrece servicios rápidos, seguros y confiables para enviar dinero a Bolivia y otros destinos. Descubre nuestras tasas competitivas y atención personalizada.',
+    descripcionCortaEmpresa: 'Envía dinero a Bolivia y otros destinos con tasas competitivas.',
     whatsappNumber: "56928618528",
     corporateEmail: "info@girosbol.com",
     oficinaCopiapo: "Bernardo O'Higgins 441, Local 24, Copiapó, Atacama, Chile",
+    copyRight: 'Todos los derechos reservados.',
     montoClpMinimo: 10000,
     montoClpMaximo: 2000000,
     tasas: [
