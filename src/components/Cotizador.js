@@ -1,32 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import ReactCountryFlag from 'react-country-flag';
 import { constants } from "@/constants";
 
 const Cotizador = () => {
     const [nombreRemitente, setNombreRemitente] = useState("");
-    const [montoCLP, setMontoCLP] = useState("");
+    const [telefono, setTelefono] = useState("");
+    const [monto, setMonto] = useState("");
+    const [monedaEnvio, setMonedaEnvio] = useState("CLP");
+    const [numeroOperacion, setNumeroOperacion] = useState(1000);
 
-    // Manejar cambio en el campo Monto a Enviar
-    const handleMontoChange = (e) => {
-        const rawValue = e.target.value.replace(/\D/g, ""); // Eliminar caracteres no numéricos
-        const numericValue = parseInt(rawValue, 10);
+    const banderaCL = <ReactCountryFlag countryCode="CL" className="emojiFlag" style={{ fontSize: "1.5em" }} />;
+    const banderaBO = <ReactCountryFlag countryCode="BO" className="emojiFlag" style={{ fontSize: "1.5em" }} />;
 
-        if (isNaN(numericValue)) {
-            setMontoCLP("");
-        } else if (numericValue > constants.montoClpMaximo) {
-            setMontoCLP("2000000");
-        } else {
-            setMontoCLP(rawValue);
-        }
+    const handleMonedaChange = (e) => {
+        setMonedaEnvio(e.target.value);
+        setMonto(""); // Reiniciar monto
     };
 
-    // Formatear número con separadores de miles
+    const handleMontoChange = (e) => {
+        const rawValue = e.target.value.replace(/\D/g, "");
+        setMonto(rawValue);
+    };
+
     const formatMiles = (num) => {
         return new Intl.NumberFormat("es-CL").format(num);
     };
 
-    // Calcular la tasa dinámica según el monto ingresado
     const calculateTasaBase = (monto) => {
         for (let i = 0; i < constants.tasas.length; i++) {
             if (monto <= constants.tasas[i].max) {
@@ -36,21 +37,39 @@ const Cotizador = () => {
         return constants.tasas[constants.tasas.length - 1].rate;
     };
 
-    // Calcular el monto en BOB
-    const montoBOB = montoCLP
-        ? (parseFloat(montoCLP) * calculateTasaBase(parseInt(montoCLP, 10))).toFixed(2)
-        : "0.00";
+    const calculateTasaBaseBOB = (monto) => {
+        for (let i = 0; i < constants.tasasBOB.length; i++) {
+            if (monto <= constants.tasasBOB[i].max) {
+                return constants.tasasBOB[i].rate;
+            }
+        }
+        return constants.tasas[constants.tasas.length - 1].rate;
+    };
 
-    // Enviar a WhatsApp
+    let montoRecibir = "0.00";
+    if (monto) {
+        if (monedaEnvio === "CLP") {
+            montoRecibir = (parseFloat(monto) * calculateTasaBase(parseInt(monto, 10))).toFixed(2);
+        } else {
+            montoRecibir = (parseFloat(monto) / calculateTasaBaseBOB(parseInt(monto, 10))).toFixed(0);
+        }
+    }
+
     const handleSendToWhatsApp = () => {
         const phoneNumber = constants.whatsappNumber;
-        const message = `Hola, mi nombre es *${nombreRemitente}*. Quiero enviar *$${formatMiles(montoCLP)} CLP* y recibir *$${formatMiles(montoBOB)} BOB* en Bolivia. Espero su confirmación para continuar con la transacción. ¡Gracias!`;
+        const mensajeCambio = monedaEnvio === "CLP" ? "Chile a Bolivia" : "Bolivia a Chile";
+        const message = `Hola, mi nombre es *${nombreRemitente}*.\n` +
+                        `Mi Número de contacto telefónico es *${telefono}*.\n` +
+                        `Quiero enviar *$${formatMiles(monto)} ${monedaEnvio}*.\n` +
+                        `Quiero recibir *$${formatMiles(montoRecibir)} ${monedaEnvio === "CLP" ? "BOB" : "CLP"}*.\n` +
+                        `Esto es un envío de dinero de ${mensajeCambio}.\n\n` +
+                        `Número de operación *#${numeroOperacion}*.\n` +
+                        `Espero su confirmación para continuar con la transacción. ¡Gracias!`;
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
     };
 
-    // Verificar si el botón debe estar habilitado
-    const isButtonDisabled = !(nombreRemitente.trim() && montoCLP && parseInt(montoCLP, 10) >= constants.montoClpMinimo);
+    const isButtonDisabled = !(nombreRemitente.trim() && telefono.trim() && monto);
 
     return (
         <div className="cotizador mt-6 mb-20 max-w-lg mx-auto p-6 shadow-md rounded bg-white">
@@ -58,56 +77,91 @@ const Cotizador = () => {
                 onSubmit={(e) => {
                     e.preventDefault();
                     handleSendToWhatsApp();
+                    setNumeroOperacion((prev) => prev + 1);
                 }}
                 className="text-start"
             >
                 <div className="mb-4">
                     <label htmlFor="nombreRemitente" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
-                        Nombre
+                        Tu Nombre
                     </label>
                     <input
                         id="nombreRemitente"
                         type="text"
                         value={nombreRemitente}
                         onChange={(e) => setNombreRemitente(e.target.value)}
-                        placeholder="Indicanos tu nombre"
+                        placeholder="Indica tu nombre"
                         className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="montoCLP" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
-                        Monto a Enviar (CLP):
+                    <label htmlFor="telefono" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
+                        Tu Número de Teléfono
                     </label>
                     <input
-                        id="montoCLP"
-                        type="text"
-                        value={formatMiles(montoCLP)}
-                        onChange={handleMontoChange}
-                        placeholder="Ejemplo $100.000"
+                        id="telefono"
+                        type="tel"
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
+                        placeholder="Ejemplo: +56912345678"
                         className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
                         required
                     />
-                    {montoCLP && parseInt(montoCLP, 10) < constants.montoClpMinimo && (
-                        <p className="text-red-600 text-xs md:text-base">El monto mínimo es de $10.000 CLP.</p>
-                    )}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="montoBOB" className="block font-bold mb-2 text-xs md:text-base text-gray-700">
-                        Monto a Recibir (BOB):
+                    <label className="block font-bold mb-2 text-xs md:text-base text-gray-700">
+                        Selecciona tu tipo de Cambio
                     </label>
-                    <input
-                        id="montoBOB"
-                        type="text"
-                        value={`${formatMiles(montoBOB)} BOB`}
-                        readOnly
-                        className="w-full p-2 border bg-gray-100 rounded text-xs md:text-base text-gray-700"
-                    />
+                    <select
+                        value={monedaEnvio}
+                        onChange={handleMonedaChange}
+                        className="w-full p-2 border rounded text-xs md:text-base text-gray-700"
+                    >
+                        <option value="CLP">{banderaCL} CLP</option>
+                        <option value="BOB">{banderaBO} BOB</option>
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block font-bold mb-2 text-xs md:text-base text-gray-700">
+                        Monto a Enviar
+                    </label>
+                    <div className="relative">
+                        <span className="absolute left-2 top-2">$</span>
+                        <input
+                            type="text"
+                            value={formatMiles(monto)}
+                            onChange={handleMontoChange}
+                            placeholder="Ejemplo: $100.000"
+                            className="w-full p-2 pl-6 border rounded text-xs md:text-base text-gray-700"
+                            maxLength={10}
+                        />
+                        <span className="absolute right-2 top-2">
+                            {monedaEnvio === "CLP" ? banderaCL : banderaBO} {monedaEnvio}
+                        </span>
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <label className="block font-bold mb-2 text-xs md:text-base text-gray-700">
+                        Monto a Recibir
+                    </label>
+                    <div className="relative">
+                        <span className="absolute left-2 top-2">$</span>
+                        <input
+                            type="text"
+                            value={formatMiles(montoRecibir)}
+                            readOnly
+                            className="w-full p-2 pl-6 border bg-gray-100 rounded text-xs md:text-base text-gray-700"
+                            maxLength={10}
+                        />
+                        <span className="absolute right-2 top-2">
+                            {monedaEnvio === "CLP" ? banderaBO : banderaCL} {monedaEnvio === "CLP" ? "BOB" : "CLP"}
+                        </span>
+                    </div>
                 </div>
                 <button
                     type="submit"
                     disabled={isButtonDisabled}
-                    data-gtm-id="continuar-whatsapp"
                     className={`w-full py-2 px-4 rounded text-xs md:text-base ${
                         isButtonDisabled
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
