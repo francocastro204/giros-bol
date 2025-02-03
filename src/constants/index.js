@@ -11,9 +11,9 @@ export const constants = {
     oficinaCopiapo: "Bernardo O'Higgins 441, Local 24, Copiapó, Atacama, Chile",
     copyRight: 'Todos los derechos reservados.',
     montoClpMinimo: 10000,
-    montoClpMaximo: 200000000,
+    montoClpMaximo: 2000000,
     montoBobMinimo: 100,
-    montoBobMaximo: 200000000,
+    montoBobMaximo: 200000,
     tasas: [
         { max: 99999, rate: 0.0100 },
         { max: 499999, rate: 0.0103 },
@@ -22,6 +22,9 @@ export const constants = {
         { max: 2000000, rate: 0.0106 },
     ],
     tasasBOB: [
-        { max: 2000000, rate: 0.0103 },
+        { max: 999, rate: 0.088 },
+        { max: 4999, rate: 0.089 },
+        { max: 10000, rate: 0.090 },
+        { max: 200000, rate: 0.091 },
     ],
 };
